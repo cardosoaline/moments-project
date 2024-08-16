@@ -38,7 +38,7 @@ onFileSelected(event: any){
 
 
 submit(){
-  console.log(this.momentForm.invalid)
+  // console.log(this.momentForm.invalid)
   if(this.momentForm.invalid){
     return;
   }

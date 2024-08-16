@@ -1,33 +1,40 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Moments } from 'src/app/moments';
+import { MessagesService } from 'src/app/services/messages.service';
 import { MomentService } from 'src/app/services/moment.service';
-
 
 @Component({
   selector: 'app-new-moment',
   templateUrl: './new-moment.component.html',
-  styleUrls: ['./new-moment.component.css']
+  styleUrls: ['./new-moment.component.css'],
 })
 export class NewMomentComponent {
-btnText =  'Compartilhar!'
+  btnText = 'Compartilhar!';
 
-constructor(private momentService: MomentService){}
+  constructor(
+    private momentService: MomentService,
+    private messageService: MessagesService,
+    private router: Router
+  ) {}
 
-ngOnInit(): void {}
+  ngOnInit(): void {}
 
-async createHandler(moment:Moments){
-  const formData = new FormData()
+  async createHandler(moment: Moments) {
+    const formData = new FormData();
 
-  formData.append("title",moment.title)
-  formData.append("description",moment.description)
-  if(moment.image){
-    formData.append('image',moment.image)
+    formData.append('title', moment.title);
+    formData.append('description', moment.description);
+    if (moment.image) {
+      formData.append('image', moment.image);
+    }
+
+
+
+    await this.momentService.createMoment(formData).subscribe();
+
+    this.messageService.add('Momento adicionado com Sucesso!!!');
+
+    this.router.navigate(['/']);
   }
-
-  //TODO: 1 -Enviar para service 2 - exibir msg 3 -redirect
-
-  await this.momentService.createMoment(formData).subscribe();
-
-}
-
 }
